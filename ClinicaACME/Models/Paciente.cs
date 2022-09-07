@@ -31,6 +31,7 @@ namespace ClinicaACME.Models
         [Column("CPF")]
         [Display(Name = "CPF")]
         [Required(ErrorMessage = "O CPF é obrigatório")]
+        [StringLength(14)]
         public string CPF { get; set; }
 
         [Column("Sexo")]

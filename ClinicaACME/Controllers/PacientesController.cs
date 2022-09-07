@@ -56,8 +56,16 @@ namespace ClinicaACME.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,DataNascimento,CPF,Sexo,Endereco,StatusAtivo")] Paciente paciente)
         {
+            if (_context.Pacientes.Any(w => w.CPF == paciente.CPF))
+            {
+                ModelState.AddModelError("", "Este CPF já existe em nosso cadastro.");
+
+                return View(paciente);
+            }
             if (ModelState.IsValid)
             {
+              
+                    
                 _context.Add(paciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
