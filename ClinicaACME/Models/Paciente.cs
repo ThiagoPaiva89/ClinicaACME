@@ -1,4 +1,5 @@
 ﻿using ClinicaACME.Interface;
+using ClinicaACME.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,23 +18,25 @@ namespace ClinicaACME.Models
 
         [Column("Nome")]
         [Display(Name = "Nome")]
-        [Required]
+        [Required(ErrorMessage = "O preenchimento do nome é obrigatório")]
         public string Nome { get; set; }
 
         [Column("Data-Nascimento")]
         [Display(Name = "Data de Nascimento")]
-        [Required]
+        [Required(ErrorMessage = "A data de nascimento é obrigatória")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
 
         [Column("CPF")]
         [Display(Name = "CPF")]
-        [Required]
+        [Required(ErrorMessage = "O CPF é obrigatório")]
         public string CPF { get; set; }
 
         [Column("Sexo")]
         [Display(Name = "Sexo")]
-        [Required]
-        public string Sexo { get; set; }
+        [Required(ErrorMessage = "O campo sexo é de escolha obrigatória")]
+        public SexoPaciente Sexo { get; set; }
 
         [Column("Endereco")]
         [Display(Name = "Endereço")]
@@ -43,5 +46,22 @@ namespace ClinicaACME.Models
         [Display(Name = "Ativo")]
         [Required]
         public bool StatusAtivo { get; set; }
+
+        public Paciente()
+        {
+
+        }
+
+        public Paciente(int id, string nome, DateTime dataNascimento, string cpf, SexoPaciente sexo, string endereco, bool statusAtivo)
+        {
+            Id = id;
+            Nome = nome;
+            DataNascimento = dataNascimento;
+            CPF = cpf;
+            Sexo = sexo;
+            Endereco = endereco;
+            StatusAtivo = statusAtivo;
+        }
+
     }
 }
