@@ -62,6 +62,7 @@ namespace ClinicaACME.Controllers
 
                 return View(paciente);
             }
+
             if (ModelState.IsValid)
             {
               
@@ -101,6 +102,13 @@ namespace ClinicaACME.Controllers
                 return NotFound();
             }
 
+            if (_context.Pacientes.Any(w => w.CPF == paciente.CPF && w.Id != paciente.Id))
+            {
+                ModelState.AddModelError("", "Este CPF já existe em nosso cadastro.");
+
+                return View(paciente);
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -124,33 +132,15 @@ namespace ClinicaACME.Controllers
             return View(paciente);
         }
 
-        // GET: Pacientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var paciente = await _context.Pacientes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paciente == null)
-            {
-                return NotFound();
-            }
-
-            return View(paciente);
-        }
+        
 
         // POST: Pacientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var paciente = await _context.Pacientes.FindAsync(id);
             _context.Pacientes.Remove(paciente);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         private bool PacienteExists(int id)
